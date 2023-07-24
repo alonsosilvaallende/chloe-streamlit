@@ -6,6 +6,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
 from langchain.chains.llm_symbolic_math.base import LLMSymbolicMathChain
+import re
 
 #######
 #from dotenv import load_dotenv, find_dotenv
@@ -65,15 +66,20 @@ def string2latex(resultado):
         'log': "\log",
         "exp": "\exp",
         "sqrt": "\sqrt",
-        "sin": "\sin",
-        "cos": "\cos",
-        "atan": "arctan",
+        "atan": "\\arctan",
+        "asin": "\\arcsin",
+        "acos": "\\arccos",
         "**": "^",
         "I": "i"
     }
     for key, value in strings_to_replace.items():
-
         resultado = resultado.replace(key, value)
+    resultado, n = re.subn('^sin|[^c]sin', 'backslash_sin', resultado)
+    resultado, n = re.subn('^cos|[^c]cos', 'backslash_cos', resultado)
+    resultado, n = re.subn('^tan|[^c]tan', 'backslash_tan', resultado)
+    resultado = resultado.replace("backslash_sin","\sin")
+    resultado = resultado.replace("backslash_cos","\cos")
+    resultado = resultado.replace("backslash_tan","\\tan")
     resultado = f"${resultado}$"
     return resultado
 
