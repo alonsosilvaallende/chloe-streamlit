@@ -20,7 +20,6 @@ Example3 = st.sidebar.button("What are the solutions to the equation y^3 + 1/3y?
 Example4 = st.sidebar.button("""Solve the differential equation y"(t) - y(t) = e^t with respect to t""")
 
 st.sidebar.markdown("If you can, [buy me a coffee](https://bmc.link/alonsosilva)")
-st.sidebar.markdown("Follow me on [Twitter (alonsosilva)](https://twitter.com/alonsosilva)")
 with st.sidebar:
     components.html(html)
 
