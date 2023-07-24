@@ -80,6 +80,7 @@ def string2latex(resultado):
     resultado = resultado.replace("backslash_sin","\sin")
     resultado = resultado.replace("backslash_cos","\cos")
     resultado = resultado.replace("backslash_tan","\\tan")
+    resultado = re.sub(r'Eq\((.*),(.*)\)',r'\1 = \2' , resultado)
     resultado = f"${resultado}$"
     return resultado
 
