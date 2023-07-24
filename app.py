@@ -7,7 +7,7 @@ import streamlit.components.v1 as components
 #load_dotenv(find_dotenv())
 #######
 
-st.sidebar.title("Cleo")
+st.sidebar.title("Cleo, The Math Solver")
 #st.sidebar.image("Partido_Republicano.png", width=100)
 html1="""
 <a href='https://ko-fi.com/S6S3C06PD' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
