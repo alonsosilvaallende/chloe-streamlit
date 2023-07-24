@@ -1,5 +1,6 @@
 import openai
 import streamlit as st
+import streamlit.components.v1 as components
 
 #######
 #from dotenv import load_dotenv, find_dotenv
@@ -8,6 +9,9 @@ import streamlit as st
 
 st.sidebar.title("Cleo")
 #st.sidebar.image("Partido_Republicano.png", width=100)
+html="""
+<a href="https://twitter.com/alonsosilva?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @alonsosilva</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+"""
 
 st.sidebar.write("Examples:")
 Example1 = st.sidebar.button("What's the integral of 1/(x^3+1)?")
@@ -17,6 +21,8 @@ Example4 = st.sidebar.button("""Solve the differential equation y"(t) - y(t) = e
 
 st.sidebar.markdown("If you can, [buy me a coffee](https://bmc.link/alonsosilva)")
 st.sidebar.markdown("Follow me on [Twitter (alonsosilva)](https://twitter.com/alonsosilva)")
+with st.sidebar:
+    components.html(html)
 
 import os
 import openai
@@ -93,6 +99,9 @@ if (prompt := st.chat_input("Your message")) or Example1 or Example2  or Example
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
-        full_response = llm_symbolic_math.run(prompt)
+        try:
+            full_response = llm_symbolic_math.run(prompt)
+        except Exception as e_msg:
+            full_response = e_msg
         message_placeholder.markdown(string2latex(full_response))
     st.session_state.messages.append({"role": "assistant", "content": string2latex(full_response)})
