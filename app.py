@@ -9,8 +9,8 @@ from langchain.chains.llm_symbolic_math.base import LLMSymbolicMathChain
 import re
 
 #######
-from dotenv import load_dotenv, find_dotenv
-load_dotenv(find_dotenv())
+#from dotenv import load_dotenv, find_dotenv
+#load_dotenv(find_dotenv())
 #######
 
 st.sidebar.title("Cleo, The Math Solver")
