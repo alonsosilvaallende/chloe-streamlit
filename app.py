@@ -9,8 +9,8 @@ from langchain.chains.llm_symbolic_math.base import LLMSymbolicMathChain
 import re
 
 #######
-#from dotenv import load_dotenv, find_dotenv
-#load_dotenv(find_dotenv())
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 #######
 
 st.sidebar.title("Cleo, The Math Solver")
@@ -113,7 +113,11 @@ if (prompt := st.chat_input("Your message")) or Example1 or Example2  or Example
         message_placeholder = st.empty()
         try:
             full_response = llm_symbolic_math.run(prompt)
+        except ValueError as e_val:
+            st.write(f"Unexpected {e_val}")
+            full_response = ""
         except Exception as e_msg:
-            full_response = e_msg
+            st.write(f"Unexpected {e_msg}, {type(e_msg)}")
+            full_response = ""
         message_placeholder.markdown(string2latex(full_response))
     st.session_state.messages.append({"role": "assistant", "content": string2latex(full_response)})
