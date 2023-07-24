@@ -1,6 +1,11 @@
+import os
 import openai
 import streamlit as st
 import streamlit.components.v1 as components
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import ConversationChain
+from langchain.memory import ConversationBufferMemory
+from langchain.chains.llm_symbolic_math.base import LLMSymbolicMathChain
 
 #######
 #from dotenv import load_dotenv, find_dotenv
@@ -8,7 +13,7 @@ import streamlit.components.v1 as components
 #######
 
 st.sidebar.title("Cleo, The Math Solver")
-#st.sidebar.image("Partido_Republicano.png", width=100)
+
 html1="""
 <a href='https://ko-fi.com/S6S3C06PD' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 <br />
@@ -24,27 +29,16 @@ Example4 = st.sidebar.button("""Solve the differential equation y"(t) - y(t) = e
 with st.sidebar:
     components.html(html1)
 
-import os
-import openai
-from langchain.chat_models import ChatOpenAI
-from langchain.chains.llm_symbolic_math.base import LLMSymbolicMathChain
-
 openai.api_base = "https://openrouter.ai/api/v1"
 openai.api_key = os.getenv("OPENROUTER_API_KEY")
 os.environ['OPENAI_API_KEY'] = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_REFERRER = "https://github.com/alonsosilvaallende/langchain-streamlit"
 
-
-
 llm = ChatOpenAI(model_name="google/palm-2-chat-bison",
                  temperature=0.1,
                  headers={"HTTP-Referer": OPENROUTER_REFERRER})
 
-
 llm_symbolic_math = LLMSymbolicMathChain.from_llm(llm)
-
-from langchain.chains import ConversationChain
-from langchain.memory import ConversationBufferMemory
 
 @st.cache_resource
 def aux():
