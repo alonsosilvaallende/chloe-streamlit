@@ -9,7 +9,9 @@ import streamlit.components.v1 as components
 
 st.sidebar.title("Cleo")
 #st.sidebar.image("Partido_Republicano.png", width=100)
-html="""
+html1="""
+<a href='https://ko-fi.com/S6S3C06PD' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+<br />
 <a href="https://twitter.com/alonsosilva?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @alonsosilva</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 """
 
@@ -19,9 +21,8 @@ Example2 = st.sidebar.button("What's the derivative of sin(x)*exp(x)?")
 Example3 = st.sidebar.button("What are the solutions to the equation y^3 + 1/3y?")
 Example4 = st.sidebar.button("""Solve the differential equation y"(t) - y(t) = e^t with respect to t""")
 
-st.sidebar.markdown("If you can, [buy me a coffee](https://bmc.link/alonsosilva)")
 with st.sidebar:
-    components.html(html)
+    components.html(html1)
 
 import os
 import openai
