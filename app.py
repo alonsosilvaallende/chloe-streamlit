@@ -6,7 +6,7 @@ import streamlit as st
 #load_dotenv(find_dotenv())
 #######
 
-st.sidebar.title("Chloe")
+st.sidebar.title("Cleo")
 #st.sidebar.image("Partido_Republicano.png", width=100)
 
 st.sidebar.write("Examples:")
