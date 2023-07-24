@@ -13,6 +13,7 @@ from langchain.chains.llm_symbolic_math.base import LLMSymbolicMathChain
 #######
 
 st.sidebar.title("Cleo, The Math Solver")
+st.sidebar.image("Cleo.png", width=100)
 
 html1="""
 <a href='https://ko-fi.com/S6S3C06PD' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
@@ -28,6 +29,16 @@ Example4 = st.sidebar.button("""Solve the differential equation y"(t) - y(t) = e
 
 with st.sidebar:
     components.html(html1)
+
+# html2="""
+# <script async defer src="https://buttons.github.io/buttons.js"></script>
+# """
+# html3="""
+# <a class="github-button" href="https://github.com/alonsosilvaallende/chloe-streamlit" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-show-count="true" aria-label="Star alonsosilvaallende/chloe-streamlit on GitHub">Star</a>
+# """
+# 
+# st.sidebar.markdown(html2, unsafe_allow_html=True)
+# st.sidebar.markdown(html3, unsafe_allow_html=True)
 
 openai.api_base = "https://openrouter.ai/api/v1"
 openai.api_key = os.getenv("OPENROUTER_API_KEY")
