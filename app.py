@@ -81,6 +81,7 @@ def string2latex(resultado):
     resultado = resultado.replace("backslash_cos","\cos")
     resultado = resultado.replace("backslash_tan","\\tan")
     resultado = re.sub(r'Eq\((.*),(.*)\)',r'\1 = \2' , resultado)
+    resultado = re.sub(r'sqrt\(([0-9]|i)\)', r'sqrt\1' , resultado)
     resultado = f"${resultado}$"
     return resultado
 
