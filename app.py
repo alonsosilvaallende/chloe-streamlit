@@ -61,8 +61,8 @@ def aux():
 memory, conversation = aux()
 
 def string2latex(resultado):
+    resultado = resultado.split("Answer: ")[-1]
     strings_to_replace = {
-        "Answer: ": "",
         'log': "\log",
         "exp": "\exp",
         "sqrt": "\sqrt",
@@ -84,6 +84,51 @@ def string2latex(resultado):
     resultado = re.sub(r'sqrt\(([0-9|i]*)\)', r'sqrt{\1}' , resultado)
     resultado = f"${resultado}$"
     return resultado
+
+def my_evaluator(prompt):
+    return llm.predict("""\
+Translate a math problem into a expression that can be executed using Python's numexpr library. Use the output of running this code to answer the question.
+
+Question: ${Question with math problem.}
+```text
+${single line mathematical expression that solves the problem}
+```
+...numexpr.evaluate(text)...
+```output
+${Output of running the code}
+```
+Answer: ${Answer}
+
+Begin.
+
+Question: What is 37593 * 67?
+```text
+37593 * 67
+```
+...numexpr.evaluate("37593 * 67")...
+```output
+2518731
+```
+Answer: 2518731
+
+Question: 37593^(1/5)
+```text
+37593**(1/5)
+```
+...numexpr.evaluate("37593**(1/5)")...
+```output
+8.222831614237718
+```
+Answer: 8.222831614237718
+
+Question:""" + prompt)
+
+def my_classifier(prompt):
+    return llm.predict("""\
+Answer either 1 or 2. Is the following question related to 
+1: Evaluating an algebraic expression or 
+2: Solve a symbolic expression:
+"""+prompt)
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -112,13 +157,30 @@ if (prompt := st.chat_input("Your message")) or Example1 or Example2  or Example
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
-        try:
-            full_response = llm_symbolic_math.run(prompt)
-        except ValueError as e_val:
-            st.write(f"Unexpected {e_val}")
+        question_class = my_classifier(prompt)
+        if '2' in question_class:
+            try:
+                full_response = llm_symbolic_math.run(prompt)
+            except ValueError as e_val:
+                st.write(f"Unexpected {e_val}")
+                full_response = ""
+            except Exception as e_msg:
+                st.write(f"Unexpected {e_msg}, {type(e_msg)}")
+                full_response = ""
+            message_placeholder.markdown(string2latex(full_response))
+        elif '1' in question_class:
+            try:
+                full_response = my_evaluator(prompt)
+            except ValueError as e_val:
+                st.write(f"Unexpected {e_val}")
+                full_response = ""
+            except Exception as e_msg:
+                st.write(f"Unexpected {e_msg}, {type(e_msg)}")
+                full_response = ""
+            message_placeholder.markdown(string2latex(full_response))
+        else:
             full_response = ""
-        except Exception as e_msg:
-            st.write(f"Unexpected {e_msg}, {type(e_msg)}")
-            full_response = ""
-        message_placeholder.markdown(string2latex(full_response))
+            st.write(f"Unexpected error")
+            message_placeholder.markdown(string2latex(full_response))
+
     st.session_state.messages.append({"role": "assistant", "content": string2latex(full_response)})
