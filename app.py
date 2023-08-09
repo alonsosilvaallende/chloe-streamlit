@@ -46,8 +46,8 @@ openai.api_key = os.getenv("OPENROUTER_API_KEY")
 os.environ['OPENAI_API_KEY'] = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_REFERRER = "https://github.com/alonsosilvaallende/langchain-streamlit"
 
-llm = ChatOpenAI(model_name="google/palm-2-chat-bison",
-                 temperature=0.1,
+llm = ChatOpenAI(model_name="openai/gpt-3.5-turbo",
+                 temperature=0,
                  headers={"HTTP-Referer": OPENROUTER_REFERRER})
 
 llm_symbolic_math = LLMSymbolicMathChain.from_llm(llm)
