@@ -41,14 +41,12 @@ with st.sidebar:
 # st.sidebar.markdown(html2, unsafe_allow_html=True)
 # st.sidebar.markdown(html3, unsafe_allow_html=True)
 
-openai.api_base = "https://openrouter.ai/api/v1"
-openai.api_key = os.getenv("OPENROUTER_API_KEY")
-os.environ['OPENAI_API_KEY'] = os.getenv("OPENROUTER_API_KEY")
-OPENROUTER_REFERRER = "https://github.com/alonsosilvaallende/langchain-streamlit"
+#openai.api_base = "https://openrouter.ai/api/v1"
+openai.api_key = os.getenv("OPENAI_API_KEY")
+#os.environ['OPENAI_API_KEY'] = os.getenv("OPENROUTER_API_KEY")
+#OPENROUTER_REFERRER = "https://github.com/alonsosilvaallende/langchain-streamlit"
 
-llm = ChatOpenAI(model_name="openai/gpt-3.5-turbo",
-                 temperature=0,
-                 headers={"HTTP-Referer": OPENROUTER_REFERRER})
+llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
 llm_symbolic_math = LLMSymbolicMathChain.from_llm(llm)
 
