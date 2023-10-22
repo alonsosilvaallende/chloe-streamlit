@@ -3,3 +3,4 @@ streamlit
 langchain
 langchain-experimental
 sympy
+trubrics
