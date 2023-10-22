@@ -5,9 +5,8 @@ import streamlit.components.v1 as components
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
-from langchain.chains.llm_symbolic_math.base import LLMSymbolicMathChain
+from langchain_experimental.llm_symbolic_math.base import LLMSymbolicMathChain
 import re
-
 #######
 #from dotenv import load_dotenv, find_dotenv
 #load_dotenv(find_dotenv())
@@ -43,10 +42,34 @@ with st.sidebar:
 
 #openai.api_base = "https://openrouter.ai/api/v1"
 openai.api_key = os.getenv("OPENAI_API_KEY")
+os.environ['TRUBRICS_EMAIL'] = os.getenv('TRUBRICS_EMAIL')
+os.environ['TRUBRICS_PASSWORD'] = os.getenv('TRUBRICS_PASSWORD')
+
+from langchain.callbacks import TrubricsCallbackHandler
+
+trubrics_callback = TrubricsCallbackHandler()
+
+from trubrics.integrations.streamlit import FeedbackCollector
+
+collector = FeedbackCollector(
+    project="default",
+    email=os.getenv('TRUBRICS_EMAIL'),
+    password=os.getenv('TRUBRICS_PASSWORD'),
+)
+
 #os.environ['OPENAI_API_KEY'] = os.getenv("OPENROUTER_API_KEY")
 #OPENROUTER_REFERRER = "https://github.com/alonsosilvaallende/langchain-streamlit"
 
-llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+llm = ChatOpenAI(model_name="gpt-3.5-turbo", 
+        temperature=0,
+        callbacks=[
+            TrubricsCallbackHandler(
+            project="default",
+            tags=["chat model"],
+            user_id="user-id-1234",
+            some_metadata={"hello": [1, 2]}
+        )
+            ])
 
 llm_symbolic_math = LLMSymbolicMathChain.from_llm(llm)
 
@@ -166,6 +189,13 @@ if (prompt := st.chat_input("Your message")) or Example1 or Example2  or Example
                 st.write(f"Unexpected {e_msg}, {type(e_msg)}")
                 full_response = ""
             message_placeholder.markdown(string2latex(full_response))
+            collector.st_feedback(
+		component="default",
+		feedback_type="thumbs",
+		model="gpt-3.5-turbo",
+		prompt_id=None,  # see prompts to log prompts and model generations
+		open_feedback_label='[Optional] Provide additional feedback'
+	    )
         elif '1' in question_class:
             try:
                 full_response = my_evaluator(prompt)
