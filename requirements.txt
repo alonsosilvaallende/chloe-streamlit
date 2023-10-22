@@ -4,3 +4,4 @@ langchain
 langchain-experimental
 sympy
 trubrics
+streamlit-feedback
